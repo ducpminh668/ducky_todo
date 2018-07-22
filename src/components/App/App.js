@@ -5,6 +5,9 @@ import Sort from '../Control/Sort';
 import Header from '../Header/Header';
 import TaskList from '../TaskTable/TaskList';
 import uuid4 from 'uuid/v4';
+import demo from './../../trainning/demo';
+
+console.log(demo);
 
 class App extends Component {
   constructor(props) {
