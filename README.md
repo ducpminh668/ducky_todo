@@ -1,4 +1,4 @@
-# node install or yarn install
+# npm install or yarn install
 # yarn start to run develope
 # yarn build for build product
 
