@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import * as actions from '../../actions';
 
 class TaskItem extends Component {
   onUpdateStatus = () => {
@@ -7,9 +9,11 @@ class TaskItem extends Component {
   onDeleteTask = () => {
     this.props.onDeleteTask(this.props.task.id);
   };
-  onUpdate = () => {
-    this.props.onUpdate(this.props.task)
-  };
+  onUpdateTask =() => {
+    this.props.onToggle()
+    this.props.onEditTask()
+  }
+  
   render() {
     const { task, index } = this.props;
     return (
@@ -23,21 +27,22 @@ class TaskItem extends Component {
                 ? 'label label-danger'
                 : 'label label-success'
             }
-            onClick={this.onUpdateStatus}
-          >
+            onClick={this.onUpdateStatus}>
             {task.status === true ? 'Kích hoạt' : 'Ẩn'}
           </span>
         </td>
         <td className="text-center">
-          <button type="button" className="btn btn-warning" onClick={this.onUpdate} >
+          <button
+            type="button"
+            className="btn btn-warning"
+            onClick={this.onUpdateTask}>
             <span className="fa fa-pencil mr-5" />Sửa
           </button>
           &nbsp;
           <button
             type="button"
             className="btn btn-danger"
-            onClick={this.onDeleteTask}
-          >
+            onClick={this.props.onDeleteTask}>
             <span className="fa fa-trash mr-5" />Xóa
           </button>
         </td>
@@ -46,4 +51,29 @@ class TaskItem extends Component {
   }
 }
 
-export default TaskItem;
+const mapStateToProps = state => {
+  return {
+    itemEdit: state.itemEditing
+  };
+};
+
+const mapDispatchToProps = (dispatch, props) => {
+  return {
+    onUpdateStatus: () => {
+      dispatch(actions.updateStatus(props.task.id));
+    },
+    onDeleteTask: () => {
+      dispatch(actions.deleteTask(props.task.id));
+    },
+    onToggle: () => {
+      dispatch(actions.toggleForm())
+    },
+    onEditTask: () => {
+      dispatch(actions.editTask(props.task))
+    }
+  };
+};
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(TaskItem);
